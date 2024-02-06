@@ -1,13 +1,106 @@
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+:root {
+  --main-color: #156ae3;
+  --sub-color: #e0e9fd;
+  --gray1: #f8f9fb;
+  --gray2: #f5f7f8;
+  --gray3: #f2f4f6;
+  --gray4: #eaedf0;
+  --gray5: #dfe3e7;
+  --gray6: #cfd4d8;
+  --gray7: #aeb3b7;
+  --gray8: #909498;
+  --gray9: #57595b;
+  --gray10: #121212;
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+body,
+button,
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: "Pretendard", "Roboto";
+}
+
+ul,
+li {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+img {
+  width: auto;
+  height: auto;
+  -webkit-user-drag: none;
+  user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -ms-touch-select: none;
+  -webkit-user-select: none;
+}
+
+button {
+  cursor: pointer;
+}
+
+h1,
+h2,
+p,
+span,
+div {
+  word-break: keep-all;
+}
+
+input {
+  border: 1px solid var(--gray4);
+  border-radius: 3px;
+  height: 40px;
+  padding: 0 17px;
+  color: #000;
+  box-sizing: border-box;
+}
+
+input:focus {
+  outline: none;
+  border-color: #000;
+}
+
+input::placeholder {
+  color: #aeb3b7;
+}
+
+/*토스트*/
+.Toastify .Toastify__toast {
+  min-height: 40px;
+  font-size: 14px;
+  padding: 8px 16px;
+}
+
+.Toastify .Toastify__toast-container {
+  z-index: 600;
+  width: fit-content !important;
+  max-width: 500px;
+  min-width: 300px;
+}
+
+.Toastify .Toastify__toast-theme--dark {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.Toastify .Toastify__close-button {
+  opacity: 1;
+  margin-top: 8px;
 }

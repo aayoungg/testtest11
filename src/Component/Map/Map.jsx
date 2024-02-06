@@ -1,9 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from "react";
 
-function Map({isInCircleState}) {
+function Map({ isInCircleState }) {
   const mapRef = useRef(null);
 
-  const [isInCircle, setIsInCircle] = isInCircleState
+  const [isInCircle, setIsInCircle] = isInCircleState;
 
   useEffect(() => {
     const mapDiv = mapRef.current;
@@ -15,7 +15,10 @@ function Map({isInCircleState}) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
-          const userLocation = new window.naver.maps.LatLng(latitude, longitude);
+          const userLocation = new window.naver.maps.LatLng(
+            latitude,
+            longitude,
+          );
 
           var radius = 100000;
 
@@ -35,25 +38,27 @@ function Map({isInCircleState}) {
             map: mapInstance,
             center: { y: 37.535736167135774, x: 127.06496506279134 },
             radius: radius,
-            strokeColor: '#FF0000',
+            strokeColor: "#FF0000",
             strokeOpacity: 0.8,
             strokeWeight: 2,
-            fillColor: '#FF0000',
+            fillColor: "#FF0000",
             fillOpacity: 0.35,
           });
 
           const isInCircle = isMarkerInCircle(marker, circle);
           setIsInCircle(isInCircle);
-
         },
         (error) => {
-          console.error('오류 발생: ' + error.message);
-          const defaultLocation = new window.naver.maps.LatLng(37.5665, 126.9780);
+          console.error("오류 발생: " + error.message);
+          const defaultLocation = new window.naver.maps.LatLng(
+            37.5665,
+            126.978,
+          );
           const mapInstance = new window.naver.maps.Map(mapDiv, {
             center: defaultLocation,
             zoom: initialZoom,
           });
-        }
+        },
       );
     }
   }, []);
@@ -63,10 +68,13 @@ function Map({isInCircleState}) {
     const circleCenter = circle.getCenter();
     const circleRadius = circle.getRadius();
 
-    const distance = getDistanceBetweenPoints(
-      markerPosition.y, markerPosition.x,
-      circleCenter.y, circleCenter.x
-    ) * 1000;
+    const distance =
+      getDistanceBetweenPoints(
+        markerPosition.y,
+        markerPosition.x,
+        circleCenter.y,
+        circleCenter.x,
+      ) * 1000;
 
     return distance <= circleRadius;
   };
@@ -78,8 +86,10 @@ function Map({isInCircleState}) {
 
     const a =
       Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
-      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+      Math.cos(deg2rad(lat1)) *
+        Math.cos(deg2rad(lat2)) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
 
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const distance = R * c;

@@ -1,47 +1,37 @@
-import { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import DatePicker from '../../Component/Date/DatePicker.jsx';
-import { workcheck } from '../../Api/api.js';
-import { getCookie } from '../../Cookie/cookie.js';
-import Pagination from '../../Component/Pagination/Pagination.jsx';
+import { useEffect, useState } from "react";
+import styled from "styled-components";
+import DatePicker from "../../Component/Date/DatePicker.jsx";
+import { workcheck } from "../../Api/api.js";
+import { getCookie } from "../../Cookie/cookie.js";
+import Pagination from "../../Component/Pagination/Pagination.jsx";
 
-const ListPosition = styled.div`
-  width: 80vw;
-  position: absolute;
-  left: 14%;
-  top: 20%;
-  overflow: hidden;
-  overflow-y: auto;
-  padding: 0px 50px;
-`
+const ListPosition = styled.div``;
 
 const ListHeader = styled.div`
   display: flex;
   justify-content: space-evenly;
   border-bottom: 1px solid black;
-  `
+`;
 
 const ListBody = styled.div`
   display: flex;
   justify-content: space-evenly;
   height: 700px;
-`
+`;
 
 const List = styled.div`
-    width: 300px;
-    display: flex;
-    height: 40px;
-    justify-content: center;
-    align-items: center;
-`
-
-
+  width: 300px;
+  display: flex;
+  height: 40px;
+  justify-content: center;
+  align-items: center;
+`;
 
 function CommuteHistory() {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [dateRecord, setDateRecord] = useState();
-  const LoginData = getCookie('logindata');
+  const LoginData = getCookie("logindata");
   const [type, setType] = useState(2); // 1 팀원 기록 2 자신의 출퇴근 기록 조회
   const [click, setClick] = useState(0); // 0 클릭 안함 1 클릭함
   const [currentPage, setCurrentPage] = useState(1);
@@ -55,52 +45,107 @@ function CommuteHistory() {
 
   useEffect(() => {
     if (rankName === "팀장" && click !== 1) {
-      setType(1)
+      setType(1);
     }
     if (startDate !== null && endDate !== null) {
-      console.log(startDate, endDate)
+      console.log(startDate, endDate);
       new workcheck()
         .get(userIdx, startDate, endDate, type)
         .then((workdata) => {
           if (type === 1) {
-            setDateRecord(workdata.data.filter(record => LoginData.data.name === record.name ? "" : record))
+            setDateRecord(
+              workdata.data.filter((record) =>
+                LoginData.data.name === record.name ? "" : record,
+              ),
+            );
           } else {
-            setDateRecord(workdata.data)
+            setDateRecord(workdata.data);
           }
-        })
+        });
     }
   }, [startDate, endDate, click]);
 
   const MyRecords = () => {
-    setType(type === 2 ? 1 : 2)
-    setClick(click === 0 ? 1 : 0)
-  }
-
+    setType(type === 2 ? 1 : 2);
+    setClick(click === 0 ? 1 : 0);
+  };
 
   const itemsPerPage = 5;
-  const totalItems = dateRecord !== undefined ? dateRecord && dateRecord.length : dateRecord && dateRecord.data.length;
+  const totalItems =
+    dateRecord !== undefined
+      ? dateRecord && dateRecord.length
+      : dateRecord && dateRecord.data.length;
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = dateRecord !== undefined ? dateRecord && dateRecord.slice(indexOfFirstItem, indexOfLastItem) : dateRecord && dateRecord.data.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems =
+    dateRecord !== undefined
+      ? dateRecord && dateRecord.slice(indexOfFirstItem, indexOfLastItem)
+      : dateRecord && dateRecord.data.slice(indexOfFirstItem, indexOfLastItem);
 
   const DateList = () => {
-
     return (
       <div>
-        {currentItems && currentItems.map((record, index) => (
-          console.log(record.name),
-          <div style={{ width: "80vw", display: "flex", justifyContent: "space-evenly", alignItems: "center", height: "50px", borderBottom: "1px solid " }} key={index} className="custom-list-item">
-            {rankName === "팀장" && type === 1 ? <List>{record.name}</List> : ""}
-            <List>{record.startDate.split("T")[0]}</List>
-            <List>{record.startDate.split("T")[1].split(":").slice(0, 2).join("시") + "분"}</List>
-            <List>{record.endDate === null ? "" : record.endDate.split("T")[1].split(":").slice(0, 2).join("시") + "분"}</List>
-            <List>{record.endDate === null ? "" : record.endDate.split("T")[1].split(":").slice(0, 2).join("") - record.startDate.split("T")[1].split(":").slice(0, 2).join("") + "분"}</List>
-          </div>
-        ))}
+        {currentItems &&
+          currentItems.map(
+            (record, index) => (
+              console.log(record.name),
+              (
+                <div
+                  style={{
+                    width: "80vw",
+                    display: "flex",
+                    justifyContent: "space-evenly",
+                    alignItems: "center",
+                    height: "50px",
+                    borderBottom: "1px solid ",
+                  }}
+                  key={index}
+                  className="custom-list-item"
+                >
+                  {rankName === "팀장" && type === 1 ? (
+                    <List>{record.name}</List>
+                  ) : (
+                    ""
+                  )}
+                  <List>{record.startDate.split("T")[0]}</List>
+                  <List>
+                    {record.startDate
+                      .split("T")[1]
+                      .split(":")
+                      .slice(0, 2)
+                      .join("시") + "분"}
+                  </List>
+                  <List>
+                    {record.endDate === null
+                      ? ""
+                      : record.endDate
+                          .split("T")[1]
+                          .split(":")
+                          .slice(0, 2)
+                          .join("시") + "분"}
+                  </List>
+                  <List>
+                    {record.endDate === null
+                      ? ""
+                      : record.endDate
+                          .split("T")[1]
+                          .split(":")
+                          .slice(0, 2)
+                          .join("") -
+                        record.startDate
+                          .split("T")[1]
+                          .split(":")
+                          .slice(0, 2)
+                          .join("") +
+                        "분"}
+                  </List>
+                </div>
+              )
+            ),
+          )}
       </div>
     );
   };
-
 
   // <MyWorkContent>
   //   <div style={{ display: "flex" }}>
@@ -112,17 +157,31 @@ function CommuteHistory() {
   //     <DatePicker />
   //   </DatePosition>
 
-
   return (
     <>
-
       <ListPosition>
         <DatePicker setStartDate={setStartDate} setEndDate={setEndDate} />
         {/* <TodayDatePicker IstodayDate={[startDate, setStartDate]} /> */}
-        {rankName === "팀장" && <div style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "right", marginRight: "20px" }}>
-          <input type="checkbox" id="check_btn" />
-          <label for="check_btn" style={{ cursor: "pointer" }} onClick={MyRecords}>내 기록 보기</label>
-        </div>}
+        {rankName === "팀장" && (
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "right",
+              marginRight: "20px",
+            }}
+          >
+            <input type="checkbox" id="check_btn" />
+            <label
+              for="check_btn"
+              style={{ cursor: "pointer" }}
+              onClick={MyRecords}
+            >
+              내 기록 보기
+            </label>
+          </div>
+        )}
         <ListHeader>
           {rankName === "팀장" && type === 1 && <List>이름</List>}
           <List>날짜</List>
@@ -142,7 +201,6 @@ function CommuteHistory() {
           paginate={paginate}
         />
       </ListPosition>
-
     </>
   );
 }
