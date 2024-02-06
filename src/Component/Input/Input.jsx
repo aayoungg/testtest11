@@ -1,14 +1,24 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
-const Input = styled.input
-`  
+const Input = styled.input`
   width: 100%;
-  height: 45px;
-  border-radius: 16px;
-  border: 1px solid #818181;
-  margin-bottom: 16px;
-  padding-left: 10px;
+  height: 40px;
+  border-radius: 3px;
+  border: 1px solid #eaedf0;
+  margin-bottom: 18px;
+  padding-left: 17px;
   box-sizing: border-box;
-`
+  font-size: 14px;
+
+  &::placeholder {
+    color: #aeb3b7;
+  }
+
+  &:active,
+  &:focus {
+    outline: none;
+    border-color: #000;
+  }
+`;
 
 export default Input;

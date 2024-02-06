@@ -1,58 +1,60 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import styled from "styled-components";
-import My from '../Component/My/My';
-import Button from '../Component/Button/NewButton';
+import My from "../Component/My/My";
+import Button from "../Component/Button/NewButton";
 import Modal from "react-modal";
-import { getCookie, setCookie } from '../Cookie/cookie';
-import { updateAccount } from '../Api/api';
+import { getCookie, setCookie } from "../Cookie/cookie";
+import { updateAccount } from "../Api/api";
 // import axios, { Axios } from 'axios';
 const InfoContainer = styled.div`
-    position: fixed;
-    bottom: 40px;
-    left: 23vw;
-    top: 20vh;
-    width: 70%;
+  position: fixed;
+  bottom: 40px;
+  left: 23vw;
+  top: 20vh;
+  width: 70%;
 `;
 
 const Container = styled.div`
-    margin : 50px 550px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-`
+  margin: 50px 550px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+`;
 const SecTitle = styled.h2`
   display: flex;
   text-align: center;
   flex-direction: column;
 `;
 
-const Form = styled.form`
-`;
+const Form = styled.form``;
 
-const InputGroup = styled.div`    //파트 이름과 파트 메모 사이
-display: flex;
-    flex-direction: column;
-    align-items: center;
+const InputGroup = styled.div`
+  //파트 이름과 파트 메모 사이
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   margin-bottom: 10px;
 `;
 
-
-const InputField = styled.input`    //파트 이름 칸
+const InputField = styled.input`
+  //파트 이름 칸
   padding: 6px;
   border: 1px solid #ccc;
   border-radius: 5px;
   margin: 3px;
 `;
 
-export const Select = styled.select`  //모달창-선택박스
-	margin: 3px;
-	display: block;
-	width: 185px;
-	padding: 5px;
-	border: 1px solid #ccc;
-	border-radius: 4px;
+export const Select = styled.select`
+  //모달창-선택박스
+  margin: 3px;
+  display: block;
+  width: 185px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 `;
-const TotalBtn = styled.div`  //모달창-취소,수정 버튼
+const TotalBtn = styled.div`
+  //모달창-취소,수정 버튼
   width: 100%;
   display: flex;
   justify-content: center;
@@ -63,9 +65,9 @@ const Info = () => {
   const user = getCookie("logindata");
 
   const [updateAccountData, setUpdateAccountData] = useState();
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [email, setEmail] = useState('');
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 
   const openModal = () => {
@@ -73,7 +75,7 @@ const Info = () => {
   };
   const closeModal = () => {
     setIsOpen(false);
-  }
+  };
 
   const customStyles = {
     overlay: {
@@ -94,7 +96,6 @@ const Info = () => {
       borderRadius: "10px",
       backgroundColor: "white",
       justifyContent: "center",
-
     },
   };
   useEffect(() => {
@@ -114,19 +115,34 @@ const Info = () => {
     if (accountdata.data.code === 200) {
       closeModal();
       setUpdateAccountData(accountdata);
-      setCookie('logindata', { ...user, data: { ...user.data, name, phone, email } }, { path: '/' });
+      setCookie(
+        "logindata",
+        { ...user, data: { ...user.data, name, phone, email } },
+        { path: "/" },
+      );
     }
   };
 
   const EditClick = () => {
     openModal();
-    setName(updateAccountData === undefined || updateAccountData === null ? user.data.name : updateAccountData.data.data.name);
-    setPhone(updateAccountData === undefined || updateAccountData === null ? user.data.phone : updateAccountData.data.data.phone);
-    setEmail(updateAccountData === undefined || updateAccountData === null ? user.data.email : updateAccountData.data.data.email);
+    setName(
+      updateAccountData === undefined || updateAccountData === null
+        ? user.data.name
+        : updateAccountData.data.data.name,
+    );
+    setPhone(
+      updateAccountData === undefined || updateAccountData === null
+        ? user.data.phone
+        : updateAccountData.data.data.phone,
+    );
+    setEmail(
+      updateAccountData === undefined || updateAccountData === null
+        ? user.data.email
+        : updateAccountData.data.data.email,
+    );
   };
 
-
-  const idx = user.data.idx
+  const idx = user.data.idx;
 
   return (
     <InfoContainer>
@@ -170,8 +186,7 @@ const Info = () => {
         <My updateAccountData={updateAccountData} />
       </Container>
     </InfoContainer>
-  )
+  );
 };
-
 
 export default Info;

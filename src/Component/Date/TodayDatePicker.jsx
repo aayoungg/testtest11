@@ -5,31 +5,31 @@ import "react-datepicker/dist/react-datepicker.css";
 import "../Date/DatePicker.css";
 
 function formatDate(date) {
-    const formattedDate = date.toISOString().split('T')[0];
-    return formattedDate;
+  const formattedDate = date.toISOString().split("T")[0];
+  return formattedDate;
 }
 
 const TodayDatePicker = ({ IstodayDate, props }) => {
-    const [startDate, setStartDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(new Date());
 
-    // IstodayDate 배열에서 첫 번째 요소를 상태 값으로, 두 번째 요소를 업데이트 함수로 추출
-    const [isDate, setIsDate] = IstodayDate;
-    useEffect(() => {
-        // 업데이트 함수를 사용하여 isDate 상태 값을 업데이트
-        setIsDate(formatDate(startDate));
-    }, [startDate])
+  // IstodayDate 배열에서 첫 번째 요소를 상태 값으로, 두 번째 요소를 업데이트 함수로 추출
+  const [isDate, setIsDate] = IstodayDate;
+  useEffect(() => {
+    // 업데이트 함수를 사용하여 isDate 상태 값을 업데이트
+    setIsDate(formatDate(startDate));
+  }, [startDate]);
 
-    return (
-        <div>
-            <DatePicker
-                selected={startDate}
-                className="custom-datepicker"
-                onChange={(date) => setStartDate(date)}
-                dateFormat="yyyy-MM-dd"
-                locale={ko}
-                maxDate={new Date()}
-            />
-        </div>
-    );
+  return (
+    <div>
+      <DatePicker
+        selected={startDate}
+        className="custom-datepicker"
+        onChange={(date) => setStartDate(date)}
+        dateFormat="yyyy-MM-dd"
+        locale={ko}
+        maxDate={new Date()}
+      />
+    </div>
+  );
 };
 export default TodayDatePicker;

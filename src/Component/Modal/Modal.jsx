@@ -3,11 +3,10 @@ import "../Modal/modal.css";
 import Map from "../Map/Map.jsx";
 import Button from "../Button/Button.jsx";
 import { getCookie, setCookie } from "../../Cookie/cookie.js";
-import { work } from "../../Api/api.js"
-
+import { work } from "../../Api/api.js";
 
 function getCookies(name) {
-  const cookies = document.cookie.split(';');
+  const cookies = document.cookie.split(";");
   for (let i = 0; i < cookies.length; i++) {
     const cookie = cookies[i].trim();
     if (cookie.startsWith(`${name}=`)) {
@@ -22,47 +21,45 @@ function Modal({ IsWorkData, onClose }) {
   const [attendanceText, setAttendanceText] = useState(true);
 
   const isInCircleState = useState(false);
-  const [isInCircle, setIsInCircle] = isInCircleState
+  const [isInCircle, setIsInCircle] = isInCircleState;
   const [typework, setTypework] = useState(0);
-  const workdataCookie = getCookies('workdata');
+  const workdataCookie = getCookies("workdata");
   const TypeworkInitialValue = workdataCookie ? 1 : 0;
 
   const closeModal = () => {
     setIsModalOpen(false);
   };
 
-
-  const LoginDate = getCookie('logindata');
+  const LoginDate = getCookie("logindata");
   const userIdx = LoginDate.data.idx;
   const workdata = getCookie("workdata");
   useEffect(() => {
     if (workdata == undefined || workdata.length === 0) {
-      setTypework(1)
+      setTypework(1);
     } else if (workdata.startDate !== null && workdata.endDate === null) {
-      setTypework(2)
+      setTypework(2);
     }
-  })
+  });
 
   const idx = typework == 2 ? workdata.idx : null;
   const toggleText = async () => {
     if (!isInCircle) {
-      alert("회사 범위 밖에 있습니다.")
+      alert("회사 범위 밖에 있습니다.");
       return;
     }
     try {
       const workdata = await new work().post(idx, userIdx, typework);
 
       if (workdata.code === 200) {
-        setCookie('workdata', workdata.data, {
-          path: '/',
+        setCookie("workdata", workdata.data, {
+          path: "/",
           // secure: true,
         });
-        IsWorkData(workdata.data)
+        IsWorkData(workdata.data);
       }
     } catch (error) {
       // 에러 처리 로직 추가 (예: console.error(error);)
     }
-
 
     closeModal();
     setAttendanceText(!attendanceText);
@@ -85,7 +82,6 @@ function Modal({ IsWorkData, onClose }) {
           </div>
         </div>
       )}
-
     </>
   );
 }

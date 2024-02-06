@@ -1,13 +1,12 @@
 import React from "react";
-import Logo from "../../Image/logo.png"
-
+import Logo from "../../Image/logo.png";
 
 const LoginLogoUrl = (props) => {
-    return (
-        <>
-            <img src={props.src} alt="" style={{ width: props.width, marginBottom: props.marginbottom, marginLeft: props.marginright, padding: props.Padding }} />
-        </>
-    )
-}
+  return (
+    <>
+      <img src={props.src} alt="" style={props.style} />
+    </>
+  );
+};
 
 export default LoginLogoUrl;

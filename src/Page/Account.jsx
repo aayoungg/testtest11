@@ -5,13 +5,7 @@ import axios from "axios";
 import Modal from "react-modal";
 import Pagination from "../Component/Pagination/Pagination";
 import { addAccount } from "../Api/api";
-const PartContainer = styled.div`
-  position: fixed;
-  bottom: 40px;
-  left: 23vw;
-  top: 20vh;
-  width: 70%;
-`;
+const PartContainer = styled.div``;
 
 const Title = styled.h2`
   color: #333;
@@ -179,7 +173,9 @@ const Account = () => {
   const handleSaveAccount = async () => {
     new addAccount()
       .post(id, password, name, phone, email, partidx, rankidx, flag, memo)
-      .then((accountdata) => {});
+      .then((accountdata) => {
+        // console.log(partdata);
+      });
 
     setId("");
     setPassword("");
@@ -204,7 +200,7 @@ const Account = () => {
             filterFlag === -1
               ? response.data.data
               : response.data.data.filter(
-                  (account) => account.AccountFlag === filterFlag
+                  (account) => account.AccountFlag === filterFlag,
                 );
           setAccounts(filteredAccounts);
         } else {
@@ -221,7 +217,7 @@ const Account = () => {
   const handleUpdateAccount = async () => {
     try {
       const updatedAccount = accounts.find(
-        (account) => account.idx === editingAccountId
+        (account) => account.idx === editingAccountId,
       );
       if (!updatedAccount) {
         alert("부서를 찾을 수 없습니다.");
@@ -285,7 +281,7 @@ const Account = () => {
   const handleDeleteAccounts = async () => {
     //삭제
     const toDelete = Object.keys(checkedAccounts).filter(
-      (idx) => checkedAccounts[idx]
+      (idx) => checkedAccounts[idx],
     );
     console.log(toDelete);
     if (toDelete.length > 0) {
@@ -324,6 +320,14 @@ const Account = () => {
       <Title>계정 목록</Title>
 
       <FlexStyle>
+        {/* <select
+            value={filterFlag} 
+            onChange={(e) => setFilterFlag(Number(e.target.value))}
+          >
+            <option key={accounts.accountFlag} value={1}>사용함</option>
+            <option key={accounts.accountFlag} value={0}>사용 안 함</option>
+            <option key={accounts.accountFlag} value={-1}>전체</option>
+          </select> */}
         <ButtonPosition>
           <Btn>
             <Button onClick={handleCreateAccount}>생성</Button>
@@ -412,29 +416,23 @@ const Account = () => {
                         />
                       )}
 
-                      <select
-                        onChange={(e) => {
-                          console.log(e.target.value);
-                          setPartIdx(e.target.value);
-                        }}
-                        value={partidx}
-                      >
+                      <Select onChange={(e) => setPartIdx(e.target.value)}>
                         {part.data.data.map((data) => (
-                          <option key={`part${data.idx}`} value={data.idx}>
+                          <option
+                            key={data.partname}
+                            defaultValue={data.partIdx}
+                          >
                             {data.partname}
                           </option>
                         ))}
-                      </select>
-                      <select
-                        onChange={(e) => setRankIdx(e.target.value)}
-                        value={rankidx}
-                      >
+                      </Select>
+                      <Select onChange={(e) => setRankIdx(e.target.value)}>
                         {position.data.data.map((data) => (
-                          <option key={`rank${data.idx}`} value={data.idx}>
+                          <option key={data.rankname} value={data.rankIdx}>
                             {data.rankname}
                           </option>
                         ))}
-                      </select>
+                      </Select>
                       {isEditing || (
                         <InputField
                           value={memo}
@@ -442,11 +440,20 @@ const Account = () => {
                           placeholder="메모"
                         />
                       )}
+                      {/* {isEditing && (
+                  <Select 
+                    value={flag}
+                    onChange={(e) => {setFlag(e.target.value)}}
+                  >
+                    <option key={accounts.accountFlag} value={1}>사용함</option>
+                    <option key={accounts.accountFlag} value={0}>사용 안 함</option>
+                  </Select>
+                )} */}
                     </InputGroup>
                     <TotalBtn>
-                      <BBtn type="button" onClick={handleCancelEdit}>
+                      <Button type="button" onClick={handleCancelEdit}>
                         취소
-                      </BBtn>
+                      </Button>
                       <Button
                         type="button"
                         onClick={

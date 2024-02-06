@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import VacationBtn from "../Component/Button/VacationBtn";
 import styled from "styled-components";
 import Modal from "react-modal";
-import { vacationPro, vacationReq, vacationProNo } from "../Api/vacationapi";
+import { vacationPro, vacationReq, vacationProNo } from "../Api/api";
 import { getCookie, setCookie } from "../Cookie/cookie";
 import axios from "axios";
 
@@ -20,6 +20,12 @@ const FormContainer = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
 `;
+// const vacationRequest = {
+//   idx: 34,
+//   approveIdx: 1,
+//   action: 'reject',
+//   reason: 'ss'
+// };
 const InputGroup = styled.div`
   //파트 이름과 파트 메모 사이
   display: flex;
@@ -95,11 +101,29 @@ const Vacation = () => {
     setStartDate("");
     setEndDate("");
     setReason("");
-    closeModal();
+    // closeModal();
   };
   const request = () => {
     //휴가 요청 버튼 클릭 시 모달 open
     openModal();
+  };
+
+  const handleApprove = async () => {
+    //휴가 수락
+    new vacationPro().put(idx, approveIdx, action, reason).then(() => {});
+    setIdx("");
+    setApproveIdx("");
+    setAction("");
+    setReason("");
+  };
+
+  const handleReject = async () => {
+    //휴가 거절
+    new vacationProNo().put(idx, approveIdx, action, reason).then(() => {});
+    setIdx("");
+    setApproveIdx("");
+    setAction("");
+    setReason("");
   };
 
   return (
@@ -114,7 +138,7 @@ const Vacation = () => {
       >
         <InputGroup>
           <h1>휴가 요청</h1>
-          <label>시작일</label>
+          <label>시작일:</label>
           <input
             type="date"
             value={startDate}
@@ -122,7 +146,7 @@ const Vacation = () => {
           />
           <br />
 
-          <label>종료일</label>
+          <label>종료일:</label>
           <input
             type="date"
             value={endDate}
@@ -130,7 +154,7 @@ const Vacation = () => {
           />
           <br />
 
-          <label>휴가 유형</label>
+          <label>종류:</label>
           {/* <input
           type="text"
           value={vacationType}
@@ -143,10 +167,9 @@ const Vacation = () => {
       >
       </select> */}
           <select
-            value={vacationType ? vacationType : 0}
+            value={vacationType ? vacationType : 1}
             onChange={(e) => setVacationType(e.target.value)}
           >
-            <option value="0">선택안됨</option>
             <option value="1">연차</option>
             <option value="2">반차</option>
             <option value="3">반반차</option>
@@ -159,7 +182,7 @@ const Vacation = () => {
           </select>
           <br />
 
-          <label>사유</label>
+          <label>사유:</label>
           <textarea
             value={reason}
             onChange={(e) => setReason(e.target.value)}
@@ -170,8 +193,62 @@ const Vacation = () => {
           <VacationBtn onClick={saveVacation}>요청</VacationBtn>
         </TotalBtn>
       </Modal>
+
+      <button onClick={handleApprove} disabled={loading}>
+        {loading ? "처리 중..." : "수락"}
+      </button>
+      <button onClick={handleReject}>거절</button>
     </FormContainer>
   );
 };
 
 export default Vacation;
+
+// const handleApprove = async () => {     //휴가 수락 및 거절
+//   setLoading(true);
+//   try {
+//     const response = await axios.put('/api/v1/vacation-app/process', {
+//       idx: 9,     //휴가 신청 인덱스 (휴가 신청자의 인덱스 아님)
+//       approveIdx: 1,    //휴가 신청할 담당자(관리자는 1, 팀장은 2)
+//       action: 'approve',   // 거절 : reject , 수락 : approve
+//       reason: 'reason'
+//     });
+
+//     if (response.data.code === 200) {
+//       alert('휴가가 수락되었습니다.');
+//     } else {
+//       alert('이미 처리한 휴가입니다.');
+//     }
+//   } catch (error) {
+//     console.error('휴가 수락 중 오류가 발생했습니다:', error);
+//     alert('휴가 수락 중 오류가 발생했습니다.');
+//     setLoading(false);
+//   }
+// };
+
+// const handleReject = async () => {    //휴가 거절
+//   const reason = prompt("거절 사유를 입력해주세요.");
+//   if ( reason === null ) {    //프롬포트 취소 클릭 시
+//     return;
+//   }
+//   setLoading(true);
+//   try {
+//     const response = await axios.put('/api/v1/vacation-app/process', {
+//       idx: 7,
+//       approveIdx: 1,
+//       action: 'reject',
+//       reason: reason
+//     });
+
+//     if (response.data.code === 200) {
+//       alert('휴가가 거절되었습니다.');
+
+//     } else {
+//       alert('휴가 거절 중 오류가 발생했습니다.');
+//     }
+//   } catch (error) {
+//     console.error('휴가 거절 중 오류가 발생했습니다:', error);
+//     alert('휴가 거절 중 오류가 발생했습니다.');
+//     setLoading(false);
+//   }
+// };

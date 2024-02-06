@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 const VacationBtn = styled.button`
   padding: 5px 15px;
-  background-color: #3AC348;
+  background-color: #3ac348;
   color: white;
   border: none;
   border-radius: 5px;
@@ -10,7 +10,7 @@ const VacationBtn = styled.button`
   transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: #4C9057;
+    background-color: #4c9057;
   }
 `;
 
